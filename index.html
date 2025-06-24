@@ -273,6 +273,21 @@ initializeCoverThicknessInputs();
             }
     </script>
     <style type="text/tailwindcss">
+        /* 新增样式解决滚动条问题 */
+        body {
+            overflow-y: scroll; /* 始终显示滚动条 */
+            padding-right: calc(100vw - 100%); /* 补偿滚动条宽度 */
+        }
+        
+        /* 底部导航栏固定宽度 */
+        footer {
+            width: calc(100% - (100vw - 100%)); /* 考虑滚动条宽度 */
+        }
+        
+        /* 历史记录视图样式 */
+        #historyView {
+            display: none; /* 初始隐藏 */
+        }
         /* 历史记录视图样式 */
         #historyView {
             display: none; /* 初始隐藏 */
@@ -1018,7 +1033,7 @@ initializeCoverThicknessInputs();
     </main>
     
     <!-- 底部导航 -->
-    <footer class="sticky bottom-0 z-40 bg-white border-t border-gray-200">
+    <footer  class="fixed bottom-0 z-40 bg-white border-t border-gray-200 w-full"">
         <div class="container mx-auto px-4">
             <div class="flex justify-around py-2">
                 <button id="rebarDataBtn" class="flex flex-col items-center justify-center text-primary p-2 w-full">
