@@ -2655,6 +2655,7 @@ function calculateCoverGroupAvg(group) {
                 addBeamRebarData(row, record.rebarInfo);
             } 
             else if (record.structureType === '柱') {
+                // 直接调用柱结构专用函数，不再调用梁结构函数
                 addColumnRebarData(row, record.rebarInfo);
             }
             else if (record.structureType === '墙') {
@@ -2780,25 +2781,43 @@ function addBeamRebarData(row, rebarInfo) {
 // 添加柱结构钢筋数据
 function addColumnRebarData(row, rebarInfo) {
     // B面主筋
-    rebarInfo.mainRebars?.bFace?.forEach((rebar, i) => {
-        const prefix = `B面主筋组${i+1}-`;
-        row[prefix + '钢筋类型'] = rebar.type;
-        row[prefix + '钢筋数量'] = rebar.count;
-        row[prefix + '钢筋等级'] = rebar.grade;
-        row[prefix + '钢筋直径(mm)'] = rebar.diameter;
-    });
+    if (rebarInfo.mainRebars?.bFace) {
+        rebarInfo.mainRebars.bFace.forEach((rebar, i) => {
+            const prefix = `B面主筋组${i+1}-`;
+            row[prefix + '钢筋类型'] = rebar.type;
+            row[prefix + '钢筋数量'] = rebar.count;
+            row[prefix + '钢筋等级'] = rebar.grade;
+            row[prefix + '钢筋直径(mm)'] = rebar.diameter;
+        });
+    }
     
     // H面主筋
-    rebarInfo.mainRebars?.hFace?.forEach((rebar, i) => {
-        const prefix = `H面主筋组${i+1}-`;
-        row[prefix + '钢筋类型'] = rebar.type;
-        row[prefix + '钢筋数量'] = rebar.count;
-        row[prefix + '钢筋等级'] = rebar.grade;
-        row[prefix + '钢筋直径(mm)'] = rebar.diameter;
-    });
+    if (rebarInfo.mainRebars?.hFace) {
+        rebarInfo.mainRebars.hFace.forEach((rebar, i) => {
+            const prefix = `H面主筋组${i+1}-`;
+            row[prefix + '钢筋类型'] = rebar.type;
+            row[prefix + '钢筋数量'] = rebar.count;
+            row[prefix + '钢筋等级'] = rebar.grade;
+            row[prefix + '钢筋直径(mm)'] = rebar.diameter;
+        });
+    }
     
-    // 箍筋信息（与梁结构相同）
-    addBeamRebarData(row, rebarInfo);
+    // 箍筋信息（使用梁结构的处理方式）
+    row['箍筋-钢筋等级'] = rebarInfo.stirrup?.grade;
+    row['箍筋-钢筋直径(mm)'] = rebarInfo.stirrup?.diameter;
+    row['箍筋-肢数'] = rebarInfo.stirrup?.legs;
+    
+    // 非加密区间距
+    rebarInfo.stirrup?.spacingNonEncrypted?.forEach((val, i) => {
+        row[`箍筋-非加密区间距-测${i+1}`] = val;
+    });
+    row['箍筋-非加密区间距平均值'] = rebarInfo.stirrup?.spacingNonEncryptedAvg;
+    
+    // 加密区间距
+    rebarInfo.stirrup?.spacingEncrypted?.forEach((val, i) => {
+        row[`箍筋-加密区间距-测${i+1}`] = val;
+    });
+    row['箍筋-加密区间距平均值'] = rebarInfo.stirrup?.spacingEncryptedAvg;
 }
 
 // 添加墙结构钢筋数据
