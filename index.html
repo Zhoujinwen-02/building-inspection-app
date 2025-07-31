@@ -157,12 +157,14 @@
             const projectName = document.getElementById('projectName').value;
             const inspectionDate = document.getElementById('inspectionDate').value;
             const inspector = document.getElementById('inspector').value;
+            const pumpStatus = document.getElementById('pumpStatus').value;
             
             // 混凝土回弹特有字段
             const componentPart = document.getElementById('componentPart').value;
             const testSurface = document.getElementById('testSurface').value;
             const surfaceCondition = document.getElementById('surfaceCondition').value;
             const testAngle = document.getElementById('testAngle').value;
+            const remarks = document.getElementById('remarksRebound').value || ''; // 获取备注
             
             // 收集回弹数据
             const reboundData = [];
@@ -194,7 +196,9 @@
                 testSurface,
                 surfaceCondition,
                 testAngle,
-                reboundData
+                reboundData,
+                pumpStatus,
+                remarks  // 添加备注字段
             };
         }
 
@@ -1204,14 +1208,25 @@
                     </div>
                     
                     <!-- 操作按钮 -->
-                    <div class="flex flex-col sm:flex-row justify-between mt-6 gap-3">
-                        <button id="resetBtn" class="px-6 py-4 bg-white border border-gray-300 rounded-lg text-neutral font-medium hover:bg-gray-50 transition-colors">
-                            <i class="fa-solid fa-refresh mr-2"></i>重置
-                        </button>
-                        <button id="saveBtn" class="px-6 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                            <i class="fa-solid fa-save mr-2"></i>保存记录
-                        </button>
-                    </div>
+                    <div class="mt-6">
+    <!-- 第一行：备注 -->
+    <div class="w-full mb-4"> 
+        <h3 class="mobile-text-base font-medium text-gray-700 mb-3 flex items-center">
+            <i class="fa-solid fa-comment text-secondary mr-2"></i>备注
+        </h3>
+        <textarea id="remarks" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all" placeholder="请输入备注信息（选填）"></textarea>
+    </div>
+    
+    <!-- 第二行：按钮 -->
+    <div class="flex justify-end gap-3">
+        <button id="resetBtn" class="px-6 py-4 bg-white border border-gray-300 rounded-lg text-neutral font-medium hover:bg-gray-50 transition-colors">
+            <i class="fa-solid fa-refresh mr-2"></i>重置
+        </button>
+        <button id="saveBtn" class="px-6 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+            <i class="fa-solid fa-save mr-2"></i>保存记录
+        </button>
+    </div>
+</div>
                 </div>
             </section>
         </div>
@@ -1237,18 +1252,17 @@
                     <select id="testSurface" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all">
                         <option value="">请选择</option>
                         <option value="侧面">侧面</option>
+                        <option value="底面">底面</option>
                         <option value="上表面">上表面</option>
                     </select>
                 </div>
                 <!-- 面状态 -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">面状态</label>
-                    <select id="surfaceCondition" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all">
-                        <option value="">请选择</option>
-                        <option value="风干">风干</option>
-                        <option value="潮湿">潮湿</option>
-                    </select>
-                </div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">面状态</label>
+    <input type="text" id="surfaceCondition" 
+           class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all" 
+           value="" placeholder="请输入面状态">
+</div>
                 <!-- 测试角度 -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">测试角度</label>
@@ -1257,6 +1271,15 @@
                         <option value="水平">水平</option>
                         <option value="向下">向下</option>
                         <option value="向上">向上</option>
+                    </select>
+                </div>
+                <!-- 是否泵送 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">是否泵送</label>
+                    <select id="pumpStatus" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
                     </select>
                 </div>
             </div>
@@ -1272,14 +1295,25 @@
                 </div>
                                                    
                     <!-- 操作按钮 -->
-                    <div class="flex flex-col sm:flex-row justify-between mt-6 gap-3">
-                        <button id="resetBtnRebound" class="px-6 py-4 bg-white border border-gray-300 rounded-lg text-neutral font-medium hover:bg-gray-50 transition-colors">
-                            <i class="fa-solid fa-refresh mr-2"></i>重置
-                        </button>
-                        <button id="saveBtnRebound" class="px-6 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                            <i class="fa-solid fa-save mr-2"></i>保存记录
-                        </button>
-                    </div>
+                    <div class="mt-6">
+    <!-- 第一行：备注 -->
+    <div class="w-full mb-4">
+        <h3 class="mobile-text-base font-medium text-gray-700 mb-3 flex items-center">
+            <i class="fa-solid fa-comment text-secondary mr-2"></i>备注
+        </h3>
+        <textarea id="remarksRebound" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-focus transition-all" placeholder="请输入备注信息（选填）"></textarea>
+    </div>
+    
+    <!-- 第二行：按钮 -->
+    <div class="flex justify-end gap-3">
+        <button id="resetBtnRebound" class="px-6 py-4 bg-white border border-gray-300 rounded-lg text-neutral font-medium hover:bg-gray-50 transition-colors">
+            <i class="fa-solid fa-refresh mr-2"></i>重置
+        </button>
+        <button id="saveBtnRebound" class="px-6 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+            <i class="fa-solid fa-save mr-2"></i>保存记录
+        </button>
+    </div>
+</div>
                 </div>
             </section>
         </div>
@@ -1356,7 +1390,7 @@
                                 <i class="fa-solid fa-robot"></i> AI助手
                             </div>
                             <div class="message-content">
-                                您好！我是您的结构检测AI助手，可以回答关于建筑结构检测、钢筋配置、混凝土回弹等问题。请问有什么可以帮您？
+                                您好！我是您的结构检测AI助手，可以帮您解答结构检测相关问题。比如：<br>- 如何测量混凝土保护层厚度？<br>      - 钢筋间距的标准要求是什么？<br>      - 回弹法检测混凝土强度的步骤？
                             </div>
                         </div>
                     </div>
@@ -2328,6 +2362,7 @@ function showRecordDetail(record) {
                                 <p><strong>测试面:</strong> ${record.testSurface || '未填写'}</p>
                                 <p><strong>面状态:</strong> ${record.surfaceCondition || '未填写'}</p>
                                 <p><strong>测试角度:</strong> ${record.testAngle || '未填写'}</p>
+                                <p><strong>是否泵送:</strong> ${record.pumpStatus || '未填写'}</p>
                             </div>
                         </div>
 
@@ -2367,6 +2402,9 @@ function showRecordDetail(record) {
                                 </div>
                             `).join('')}
                         </div>
+                        <div class="mt-4">
+                <p><strong>备注:</strong> ${record.remarks || '无备注信息'}</p>
+            </div>
                     </div>
                 `;
             }
@@ -2549,6 +2587,10 @@ function calculateCoverGroupAvg(group) {
             document.getElementById('componentName').value = '';
             document.getElementById('heightLocation').value = '';
             document.getElementById('floorHeight').value = '';
+
+            //重置备注输入框
+            document.getElementById('remarks').value = '';
+    document.getElementById('remarksRebound').value = '';
 
             // 重置保护层厚度
     document.querySelectorAll('.cover-point').forEach(input => {
@@ -2757,7 +2799,7 @@ function calculateCoverGroupAvg(group) {
     const inspectionDate = getElementValue('inspectionDate');
     const inspector = getElementValue('inspector');
     const inspectionLocation = getElementValue('inspectionLocation');
-    const remarks = getElementValue('remarks');
+    const remarks = document.getElementById('remarks').value || ''; // 获取备注
 
     // 结构类型（添加空值保护）
     const structureTypeEl = document.getElementById('currentStructureType');
@@ -2992,7 +3034,9 @@ function calculateCoverGroupAvg(group) {
                 '记录时间': new Date(record.timestamp).toLocaleString(),
                 '构件名称': record.heightData.componentName,
                 '层高检测部位': record.heightData.location,
-                '层高(mm)': record.heightData.height
+                '层高(mm)': record.heightData.height,
+                '是否泵送': record.pumpStatus || '',
+                '备注': record.remarks || ''  // 添加备注列
             };
 
             // 添加截面尺寸
@@ -3021,9 +3065,6 @@ function calculateCoverGroupAvg(group) {
             else if (record.structureType === '墙') {
                 addWallRebarData(row, record.rebarInfo);
             }
-
-            // 添加备注
-            row['备注'] = record.remarks || '';
             
             return row;
         });
@@ -3045,7 +3086,8 @@ function calculateCoverGroupAvg(group) {
                     '测试面': record.testSurface,
                     '面状态': record.surfaceCondition,
                     '测试角度': record.testAngle,
-                    '测区编号': group.group
+                    '测区编号': group.group,
+                    '备注': record.remarks || ''  // 添加备注列
                 };
 
                 // 添加回弹值
